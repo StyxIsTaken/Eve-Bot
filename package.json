@@ -1,0 +1,15 @@
+{
+  "name": "cazzbot",
+  "version": "1.0.0",
+  "description": "bot for cazz",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "author": "Aesthetic & StyxIsTaken",
+  "license": "ISC",
+  "dependencies": {
+    "enmap": "^5.9.0",
+    "wokcommands": "^1.5.3"
+  }
+}
