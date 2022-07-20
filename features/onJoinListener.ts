@@ -12,8 +12,10 @@ export default (client: Client, instance: WOKCommands) => {
     setTimeout(async () => {
       await new userSchema({
         userID: memberId,
-        cazzCoin: 1,
-        infractions: 0
+        coinage: 1,
+        infractions: 0,
+        messages: 0,
+        msgCounter: 0
       }).save()
     }, 5000)
   })

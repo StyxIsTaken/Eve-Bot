@@ -23,7 +23,7 @@ export default {
     if(await userSchema.findOne({userID: authorID})){
       console.log('user already exist!');
       message.reply(`You already have a profile setup for Cazz Coin! \n
-      With a balance of ${cazzProfile?.cazzCoin}`);
+      With a balance of ${cazzProfile?.coinage}`);
       return;
     }else{
         
@@ -41,7 +41,7 @@ export default {
             .setThumbnail('https://i.imgur.com/M88Y1PO.jpeg')
             .setDescription(`**Setup successful!**`)
             .addField(`\u200b`, `\u200b`)
-            .addField(`💰 Current Balance`, `${cazzProfile?.cazzCoin}`)
+            .addField(`💰 Current Balance`, `${cazzProfile?.coinage}`)
 
             message.channel.send({embeds: [cazzProfEmbed]});
     }

@@ -1,10 +1,8 @@
 import { Client, Message, MessageEmbed, MessageSelectMenu, TextChannel } from 'discord.js'
-import { MembershipStates } from 'discord.js/typings/enums'
+
 import WOKCommands from 'wokcommands'
 import userSchema from '../schemas/userSchema'
-import Enmap from 'enmap'
-import mongoose from 'mongoose'
-
+import msgCounterFunc from '../globals/economy/msgCounterFunc'
 
 export default (client: Client, instance: WOKCommands) => {
   // Listen for bad messages
@@ -23,19 +21,32 @@ export default (client: Client, instance: WOKCommands) => {
   client.on('messageCreate', async (msg) => {
 
     try{
-
     // Part 1 Start!
     const memberId = msg.author.id;
     const bannedWords = ["badword", "nogood"]; 
     const inputContent = msg.content.toLowerCase();
-    const cazzProfile = await userSchema.findOne({
+    const eveProfile = await userSchema.findOne({
       userID: memberId
     })
-    
-    console.log(cazzProfile)
 
-    if(!cazzProfile)
+    if(msg.author.bot)
       return;
+
+    if(!eveProfile){
+      
+      setTimeout(async () => {
+        await new userSchema({
+          userID: memberId,
+          coinage: 1,
+          infractions: 0,
+          messages: 1,
+          msgCounter: 1
+        }).save()
+      }, 5000)
+      
+      return;
+    }
+     
 
 if (bannedWords.some(word => msg.content.toLowerCase().includes(word.toLowerCase()))) {
     
@@ -52,7 +63,7 @@ if (bannedWords.some(word => msg.content.toLowerCase().includes(word.toLowerCase
           {name: `Message Blocked:`, value:`${inputContent}`},
           {name: `\u200b`, value: `\u200b`},
           {name: `Added:`, value: `1 Infraction to user`},
-          {name: `Infractions:`, value: `Current ${cazzProfile?.infractions}`}
+          {name: `Infractions:`, value: `Current ${eveProfile?.infractions}`}
           )
       .setFooter({text: 'Test for now'});
       //delete the message
@@ -67,11 +78,8 @@ if (bannedWords.some(word => msg.content.toLowerCase().includes(word.toLowerCase
     }
 
   // Part 2 Start
-
-  myFunc(cazzProfile.msgCounter, memberId)
-
-   
-
+  msgCounterFunc(eveProfile.msgCounter, memberId)
+  // Part 2 End
   }catch(err){
     console.log(err)
   }
@@ -79,15 +87,5 @@ if (bannedWords.some(word => msg.content.toLowerCase().includes(word.toLowerCase
   })  
 }
 
-async function myFunc(msgCounter: Number, memberId: string){
-  
-    await userSchema.findOneAndUpdate({userID: memberId}, {$inc: {messages: 1, msgCounter: 1}}, {upsert: true, new: true})
 
-    if(msgCounter >= 10){
-      await userSchema.findOneAndUpdate({userID: memberId}, {$inc: {cazzCoin: 5}}, {upsert: true, new: true})
-      await userSchema.findOneAndUpdate({userID: memberId}, {msgCounter: 0}, {upsert: true, new: true})
-      return;
-    }
-
-}
 

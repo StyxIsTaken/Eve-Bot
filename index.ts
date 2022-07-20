@@ -5,7 +5,7 @@ import dotenv from 'dotenv'
 dotenv.config()
 
 
-const client = new DiscordJS.Client({
+export const client = new DiscordJS.Client({
   intents: [
     DiscordJS.Intents.FLAGS.GUILD_MESSAGES,
     DiscordJS.Intents.FLAGS.GUILDS,

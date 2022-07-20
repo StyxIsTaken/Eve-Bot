@@ -2,7 +2,7 @@ import {Schema, model } from "mongoose";
 
 interface IUser{
     userID: string;
-    cazzCoin?: Number;
+    coinage?: Number;
     infractions?: Number;
     messages?: Number;
     msgCounter: Number;
@@ -14,13 +14,14 @@ const userSchema = new Schema<IUser>({
         type: String,
         required: true
     },
-    cazzCoin:{
+    coinage:{
         type: Number,
         required: false
     },
     infractions:{
         type: Number,
-        required: false
+        required: true,
+        default: 0
     },
     messages: {
         type: Number,

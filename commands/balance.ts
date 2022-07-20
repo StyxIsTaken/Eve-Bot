@@ -26,7 +26,7 @@ export default {
     .setThumbnail('https://i.imgur.com/M88Y1PO.jpeg')
     .setDescription(`**Wallet Balance**`)
     .addField(`\u200b`, `\u200b`)
-    .addField(`💰 Current Balance`, `${balUser?.cazzCoin} Cazz Coin(s)`, true)
+    .addField(`💰 Current Balance`, `${balUser?.coinage} Cazz Coin(s)`, true)
 
     message.reply({embeds: [balEmbed]});
   },
