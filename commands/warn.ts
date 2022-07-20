@@ -1,7 +1,7 @@
 import { MessageEmbed, Role, TextChannel } from 'discord.js'
 import { ICommand } from 'wokcommands'
 import userSchema from '../schemas/userSchema'
-import modWarnEmbed from '../globals/embeds'
+import {modWarnEmbed, ciBanEmbed} from '../globals/embeds'
 
 export default {
   name: 'warn',
@@ -57,21 +57,7 @@ export default {
         
         if(eveProfile.infractions >= 3){
           
-          const ciBanEmbed = new MessageEmbed()
-          .setColor('RED')
-          .setTitle('__**MOD: User Banned!**__')
-          .setThumbnail('https://i.imgur.com/M88Y1PO.jpeg')
-          .setDescription(`**${mentionedUser} Banned!**`)
-          .addFields(
-            {name: `User Banned:`, value: `${mentionedUser}`, inline: true},
-            {name: `By Moderator:`, value: `<@998206783866798162>`, inline: true},
-            {name: `Reason:`, value:`${reasoning}`, inline: true}
-          );
-
-          setTimeout( () => {
-            (client.channels.cache.get('991248530339545188') as TextChannel ).send({embeds: [ciBanEmbed]})
-          }, 3000);
-          
+          ciBanEmbed(mentionedUser, reasoning)
           //ban mentioned user for too many infractions!
           targetUser.ban()
             return;
