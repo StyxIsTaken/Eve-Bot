@@ -3,6 +3,7 @@ import { Client, Message, MessageEmbed, MessageSelectMenu, TextChannel } from 'd
 import WOKCommands from 'wokcommands'
 import userSchema from '../schemas/userSchema'
 import msgCounterFunc from '../globals/economy/msgCounterFunc'
+import levelUpFunc from '../globals/economy/levelUp'
 
 export default (client: Client, instance: WOKCommands) => {
   // Listen for bad messages
@@ -23,11 +24,8 @@ export default (client: Client, instance: WOKCommands) => {
     try{
     // Part 1 Start!
     const memberId = msg.author.id;
-    const bannedWords = ["badword", "nogood"]; 
-    const inputContent = msg.content.toLowerCase();
-    const eveProfile = await userSchema.findOne({
-      userID: memberId
-    })
+    const eveProfile = await userSchema.findOne({userID: memberId})
+    
 
     if(msg.author.bot)
       return;
@@ -37,20 +35,19 @@ export default (client: Client, instance: WOKCommands) => {
       setTimeout(async () => {
         await new userSchema({
           userID: memberId,
-          coinage: 1,
-          infractions: 0,
+          exp: 1,
+          level: 1,
           messages: 1,
           msgCounter: 1
         }).save()
       }, 5000)
-      
       return;
     }
      
 
-if (bannedWords.some(word => msg.content.toLowerCase().includes(word.toLowerCase()))) {
+/*if (bannedWords.some(word => msg.content.toLowerCase().includes(word.toLowerCase()))) {
     
-  await userSchema.findOneAndUpdate({userID: memberId},{$inc: {infractions: +1}},{upsert: true,new: true});
+  await userSchema.findOneAndUpdate({userID: memberId},{$inc: {exp: +1}},{upsert: true,new: true});
   
   const blockedEmbed = new MessageEmbed()
       .setColor('#4278f5')
@@ -76,13 +73,16 @@ if (bannedWords.some(word => msg.content.toLowerCase().includes(word.toLowerCase
       return;
     // Part 1 End
     }
+*/
 
   // Part 2 Start
   msgCounterFunc(eveProfile.msgCounter, memberId)
+  levelUpFunc(eveProfile.exp, memberId)
   // Part 2 End
-  }catch(err){
-    console.log(err)
-  }
+  
+    }catch(err){
+      console.log(err)
+    }
   
   })  
 }

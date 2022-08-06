@@ -1,5 +1,6 @@
-import { MessageEmbed, Role, TextChannel, Client, Channel } from 'discord.js'
+import { MessageEmbed, Role, TextChannel, Client, Message } from 'discord.js'
 import { client } from '../index'
+
 
 
 export async function modWarnEmbed(mentionedUser: any, moderator: string, reason: string) {

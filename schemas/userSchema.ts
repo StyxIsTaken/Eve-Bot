@@ -2,9 +2,9 @@ import {Schema, model } from "mongoose";
 
 interface IUser{
     userID: string;
-    coinage?: Number;
-    infractions?: Number;
-    messages?: Number;
+    exp: Number;
+    level: Number;
+    messages: Number;
     msgCounter: Number;
 }
 
@@ -14,14 +14,13 @@ const userSchema = new Schema<IUser>({
         type: String,
         required: true
     },
-    coinage:{
+    exp:{
         type: Number,
         required: false
     },
-    infractions:{
+    level:{
         type: Number,
-        required: true,
-        default: 0
+        required: true
     },
     messages: {
         type: Number,
